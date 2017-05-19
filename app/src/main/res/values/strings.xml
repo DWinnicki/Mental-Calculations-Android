@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Mental Calculations</string>
+    <string name="result_colon">Result:</string>
+    <string name="score_colon">Score</string>
 </resources>
