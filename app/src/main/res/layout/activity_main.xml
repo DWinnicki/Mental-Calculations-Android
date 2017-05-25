@@ -49,6 +49,7 @@
             android:layout_below="@+id/editTextResult"
             android:layout_alignStart="@+id/tvResult"
             android:layout_marginTop="16dp"
+            android:onClick="calculateScore"
             android:text="@string/score_colon" />
         <TextView
             android:id="@+id/textViewScore"

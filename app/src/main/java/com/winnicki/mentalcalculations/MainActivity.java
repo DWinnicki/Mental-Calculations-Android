@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.winnicki.mentalcalculations.model.FileOperationManagement;
 import com.winnicki.mentalcalculations.model.Operation;
@@ -22,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements GridView.OnItemCl
 
     ArrayList<Operation> listOfOperations;
     OperationAdapter adapter;
-    ArrayList<String> characters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,34 +37,42 @@ public class MainActivity extends AppCompatActivity implements GridView.OnItemCl
         textViewScore = (TextView)findViewById(R.id.textViewScore);
 
         listOfOperations = FileOperationManagement.readFile(this, "operations.txt");
-        characters = new ArrayList<>();
-        for(int i=0;i<listOfOperations.size();i++) {
-            Operation operation = listOfOperations.get(i);
-            characters.add(operation.getFirstOperand());
-            characters.add(operation.getOperator());
-            characters.add(operation.getSecondOperand());
-            characters.add(operation.getEqualSign());
-            characters.add(operation.getResult());
-            characters.add(String.valueOf(operation.getMark()));
-        }
-        adapter = new OperationAdapter(this, characters);
+        adapter = new OperationAdapter(this, listOfOperations);
         gridViewOperations.setAdapter(adapter);
         gridViewOperations.setOnItemClickListener(this);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(!editTextResult.getText().toString().isEmpty()) {
-            switch (position) {
-                case 4:
-                case 10:
-                case 16:
-                case 22:
-                case 28:
-                    characters.set(position, editTextResult.getText().toString());
-                    characters.set(position+1, "good");
-                    adapter.notifyDataSetChanged();
+        int columnNumber = (position%6)+1;
+        int rowNumber=(position/6);
+
+        String userResult = editTextResult.getText().toString();
+
+        Operation operation = listOfOperations.get(rowNumber);
+
+        if(columnNumber == 5) {
+            if (!userResult.isEmpty()) {
+                operation.setResult(userResult);
+                if (operation.checkResult(userResult)) {
+                    operation.setMark(EnumMark.CORRECT);
+                } else {
+                    operation.setMark(EnumMark.WRONG);
+                }
+                adapter.notifyDataSetChanged();
+            } else if (userResult.isEmpty()) {
+                Toast.makeText(this, "Please enter a result.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void calculateScore(View view) {
+        double numberOfGoodAnswers = 0;
+        for (int i=0; i<listOfOperations.size(); i++) {
+            if(listOfOperations.get(i).getMark() == EnumMark.CORRECT) {
+                numberOfGoodAnswers++;
+            }
+        }
+        textViewScore.setText(String.format("%s%%", String.valueOf((numberOfGoodAnswers / 5.0f) * 100.0f)));
     }
 }

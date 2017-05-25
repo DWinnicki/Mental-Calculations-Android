@@ -1,36 +1,29 @@
 package com.winnicki.mentalcalculations.model;
 
+import com.winnicki.mentalcalculations.EnumMark;
+
 public class Operation {
-    private String firstOperand;
+    private int firstOperand;
     private String operator;
-    private String secondOperand;
+    private int secondOperand;
     private String equalSign;
     private String result;
-    private String mark;
+    private EnumMark mark;
 
-    public Operation(String firstOperand, String operator, String secondOperand, String equalSign, String result) {
+    public Operation(int firstOperand, String operator, int secondOperand, String equalSign, String result) {
         this.firstOperand = firstOperand;
         this.operator = operator;
         this.secondOperand = secondOperand;
         this.equalSign = equalSign;
         this.result = result;
-        this.mark = "empty";
+        this.mark = EnumMark.EMPTY;
     }
 
-    public Operation(String firstOperand, String operator, String secondOperand, String equalSign, String result, String mark) {
-        this.firstOperand = firstOperand;
-        this.operator = operator;
-        this.secondOperand = secondOperand;
-        this.equalSign = equalSign;
-        this.result = result;
-        this.mark = mark;
-    }
-
-    public String getFirstOperand() {
+    public int getFirstOperand() {
         return firstOperand;
     }
 
-    public void setFirstOperand(String firstOperand) {
+    public void setFirstOperand(int firstOperand) {
         this.firstOperand = firstOperand;
     }
 
@@ -42,11 +35,11 @@ public class Operation {
         this.operator = operator;
     }
 
-    public String getSecondOperand() {
+    public int getSecondOperand() {
         return secondOperand;
     }
 
-    public void setSecondOperand(String secondOperand) {
+    public void setSecondOperand(int secondOperand) {
         this.secondOperand = secondOperand;
     }
 
@@ -66,11 +59,26 @@ public class Operation {
         this.result = result;
     }
 
-    public String getMark() {
+    public EnumMark getMark() {
         return mark;
     }
 
-    public void setMark(String mark) {
+    public void setMark(EnumMark mark) {
         this.mark = mark;
+    }
+
+    public boolean checkResult(String userResult) {
+        int answer = 0;
+        switch (getOperator()) {
+            case "+":
+                answer = getFirstOperand() + getSecondOperand();
+                break;
+            case "-":
+                answer = getFirstOperand() - getSecondOperand();
+                break;
+            case "x":
+                answer = getFirstOperand() * getSecondOperand();
+        }
+        return Integer.parseInt(userResult) == answer;
     }
 }

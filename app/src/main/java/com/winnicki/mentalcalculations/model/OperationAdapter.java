@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.winnicki.mentalcalculations.R;
@@ -17,21 +16,27 @@ import java.util.ArrayList;
 public class OperationAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<String> listOfCharacters;
+    private ArrayList<Operation> listOfOperations;
+    private ArrayList<String> listOfStrings;
 
-    public OperationAdapter(Context context, ArrayList<String> listOfCharacters) {
+    public OperationAdapter(Context context, ArrayList<Operation> listOfOperations) {
         this.context = context;
-        this.listOfCharacters = listOfCharacters;
+        this.listOfOperations = listOfOperations;
+        this.listOfStrings = listOfOperationsToListOfStrings(listOfOperations);
     }
 
     @Override
     public int getCount() {
-        return listOfCharacters.size();
+        return listOfStrings.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listOfCharacters.get(position);
+        return listOfStrings.get(position);
+    }
+
+    private Operation getOperation(int i) {
+        return listOfOperations.get(i);
     }
 
     @Override
@@ -41,45 +46,59 @@ public class OperationAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        switch (position) {
-            case 4:
-            case 10:
-            case 16:
-            case 22:
-            case 28:
-                TextView textView = new TextView(context);
-                String character = (String) getItem(position);
-                textView.setText(character);
-                textView.setTextSize(30);
-                textView.setBackgroundResource(R.drawable.box);
-                textView.setGravity(Gravity.CENTER);
-                textView.setLayoutParams(new GridView.LayoutParams(200, 200));
-                return textView;
-            case 5:
-            case 11:
-            case 17:
-            case 23:
-            case 29:
-                ImageView imageView = new ImageView(context);
-                String mark = (String)getItem(position);
-                if(mark.equals("good")) {
+        int columnNumber = (position%6)+1;
+        int rowNumber=(position/6);
+
+        if(columnNumber == 5) {
+            TextView textView = new TextView(context);
+            Operation operation = getOperation(rowNumber);
+            textView.setText(operation.getResult());
+            textView.setTextSize(30);
+            textView.setBackgroundResource(R.drawable.box);
+            textView.setGravity(Gravity.CENTER);
+            textView.setLayoutParams(new GridView.LayoutParams(200, 200));
+            return textView;
+        } else if(columnNumber == 6) {
+            ImageView imageView = new ImageView(context);
+            Operation operation = getOperation(rowNumber);
+
+            switch (operation.getMark()) {
+                case CORRECT:
                     imageView.setImageResource(R.drawable.good);
-                } else if(mark.equals("bad")) {
+                    break;
+                case WRONG:
                     imageView.setImageResource(R.drawable.wrong);
-                } else {
+                    break;
+                default:
                     imageView.setImageResource(R.drawable.empty);
-                }
-                imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                return imageView;
-            default:
-                textView = new TextView(context);
-                character = (String) getItem(position);
-                textView.setText(character);
-                textView.setTextSize(30);
-                textView.setGravity(Gravity.CENTER);
-                textView.setLayoutParams(new GridView.LayoutParams(200, 200));
-                return textView;
+                    break;
+            }
+
+            imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            return imageView;
+        } else {
+            TextView textView = new TextView(context);
+            String str = (String) getItem(position);
+            textView.setText(str);
+            textView.setTextSize(30);
+            textView.setGravity(Gravity.CENTER);
+            textView.setLayoutParams(new GridView.LayoutParams(200, 200));
+            return textView;
         }
+    }
+
+    private ArrayList<String> listOfOperationsToListOfStrings(ArrayList<Operation> listOfOperations) {
+        ArrayList<String> arrayList = new ArrayList<>();
+        for(int i=0;i<listOfOperations.size();i++) {
+            Operation operation = listOfOperations.get(i);
+            arrayList.add(String.valueOf(operation.getFirstOperand()));
+            arrayList.add(operation.getOperator());
+            arrayList.add(String.valueOf(operation.getSecondOperand()));
+            arrayList.add(operation.getEqualSign());
+            arrayList.add(operation.getResult());
+            arrayList.add(String.valueOf(operation.getMark()));
+        }
+        return arrayList;
     }
 }

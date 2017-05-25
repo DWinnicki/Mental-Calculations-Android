@@ -23,9 +23,9 @@ public class FileOperationManagement {
 
             while ((oneLine = br.readLine()) != null) {
                 StringTokenizer st = new StringTokenizer(oneLine, ";");
-                String firstOperand = st.nextToken();
+                int firstOperand = Integer.parseInt(st.nextToken());
                 String operator = st.nextToken();
-                String secondOperand = st.nextToken();
+                int secondOperand = Integer.parseInt(st.nextToken());
                 String equalSign = st.nextToken();
                 String questionMark = st.nextToken();
                 Operation operation = new Operation(firstOperand,operator,secondOperand,equalSign,questionMark);
