@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements GridView.OnItemCl
         int rowNumber=(position/6);
 
         String userResult = editTextResult.getText().toString();
-
+        editTextResult.setText(null);
         Operation operation = listOfOperations.get(rowNumber);
 
         if(columnNumber == 5) {

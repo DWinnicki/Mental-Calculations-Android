@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="32dp"
+            android:verticalSpacing="16dp"
             android:numColumns="6"/>
     </LinearLayout>
 
@@ -25,29 +26,33 @@
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tvResult"
-            android:layout_width="128dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/editTextResult"
-            android:layout_marginStart="16dp"
+            android:layout_alignEnd="@+id/tvScore"
             android:textSize="24sp"
             android:text="@string/result_colon"
             android:labelFor="@+id/editTextResult"/>
+
         <EditText
             android:id="@+id/editTextResult"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/tvResult"
-            android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_toEndOf="@+id/tvResult"
             android:ems="10"
-            android:inputType="number" />
+            android:inputType="number"
+            android:textAppearance="@style/TextAppearance.AppCompat" />
+
         <Button
             android:id="@+id/tvScore"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="128dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/editTextResult"
-            android:layout_alignStart="@+id/tvResult"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:onClick="calculateScore"
             android:text="@string/score_colon" />
@@ -58,6 +63,7 @@
             android:layout_toEndOf="@+id/tvScore"
             android:layout_alignBaseline="@id/tvScore"
             android:layout_alignStart="@+id/editTextResult"
+            android:layout_marginEnd="16dp"
             android:textSize="24sp" />
     </RelativeLayout>
 </LinearLayout>

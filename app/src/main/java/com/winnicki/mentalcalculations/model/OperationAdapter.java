@@ -46,10 +46,28 @@ public class OperationAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        int columnNumber = (position%6)+1;
-        int rowNumber=(position/6);
+        int columnNumber = (position % 6) + 1;
+        int rowNumber = (position / 6);
 
-        if(columnNumber == 5) {
+        if(columnNumber == 1) {
+            TextView textView = new TextView(context);
+            String str = (String) getItem(position);
+            textView.setText(str);
+            textView.setTextSize(30);
+            textView.setBackgroundResource(R.drawable.left_border);
+            textView.setGravity(Gravity.CENTER);
+            textView.setLayoutParams(new GridView.LayoutParams(200, 200));
+            return textView;
+        } else if(columnNumber == 4) {
+            TextView textView = new TextView(context);
+            String str = (String) getItem(position);
+            textView.setText(str);
+            textView.setTextSize(30);
+            textView.setBackgroundResource(R.drawable.top_and_bottom_border);
+            textView.setGravity(Gravity.CENTER);
+            textView.setLayoutParams(new GridView.LayoutParams(200, 200));
+            return textView;
+        } else if(columnNumber == 5) {
             TextView textView = new TextView(context);
             Operation operation = getOperation(rowNumber);
             textView.setText(operation.getResult());
@@ -64,7 +82,7 @@ public class OperationAdapter extends BaseAdapter {
 
             switch (operation.getMark()) {
                 case CORRECT:
-                    imageView.setImageResource(R.drawable.good);
+                    imageView.setImageResource(R.drawable.correct);
                     break;
                 case WRONG:
                     imageView.setImageResource(R.drawable.wrong);
@@ -73,7 +91,6 @@ public class OperationAdapter extends BaseAdapter {
                     imageView.setImageResource(R.drawable.empty);
                     break;
             }
-
             imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             return imageView;
@@ -82,6 +99,7 @@ public class OperationAdapter extends BaseAdapter {
             String str = (String) getItem(position);
             textView.setText(str);
             textView.setTextSize(30);
+            textView.setBackgroundResource(R.drawable.top_and_bottom_border);
             textView.setGravity(Gravity.CENTER);
             textView.setLayoutParams(new GridView.LayoutParams(200, 200));
             return textView;
